@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final unsplashResponse = unsplashResponseFromJson(jsonString);
-
 import 'package:json_annotation/json_annotation.dart';
 
 part 'unsplash.model.g.dart';
@@ -9,27 +5,42 @@ part 'unsplash.model.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class UnsplashResponse {
+    int total;
+    int totalPages;
+    List<Result> results;
+
+    UnsplashResponse({
+        this.total,
+        this.totalPages,
+        this.results,
+    });
+
+    factory UnsplashResponse.fromJson(Map<String, dynamic> json) =>
+        _$UnsplashResponseFromJson(json);
+
+    Map<String, dynamic> toJson() => _$UnsplashResponseToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class Result {
     String id;
     DateTime createdAt;
     DateTime updatedAt;
     int width;
     int height;
     String color;
-    dynamic description;
+    String description;
     String altDescription;
     Urls urls;
-    UnsplashResponseLinks links;
+    ResultLinks links;
     List<dynamic> categories;
     int likes;
     bool likedByUser;
     List<dynamic> currentUserCollections;
     User user;
-    Exif exif;
-    Location location;
-    int views;
-    int downloads;
+    List<Tag> tags;
 
-    UnsplashResponse({
+    Result({
         this.id,
         this.createdAt,
         this.updatedAt,
@@ -45,98 +56,153 @@ class UnsplashResponse {
         this.likedByUser,
         this.currentUserCollections,
         this.user,
-        this.exif,
-        this.location,
-        this.views,
-        this.downloads,
+        this.tags,
     });
 
-    factory UnsplashResponse.fromJson(Map<String, dynamic> json) =>
-        _$UnsplashResponseFromJson(json);
+    factory Result.fromJson(Map<String, dynamic> json) =>
+        _$ResultFromJson(json);
 
-    Map<String, dynamic> toJson() => _$UnsplashResponseToJson(this);
+    Map<String, dynamic> toJson() => _$ResultToJson(this);
 }
 
 @JsonSerializable(explicitToJson: true)
-class Exif {
-    String make;
-    String model;
-    String exposureTime;
-    String aperture;
-    String focalLength;
-    int iso;
-
-    Exif({
-        this.make,
-        this.model,
-        this.exposureTime,
-        this.aperture,
-        this.focalLength,
-        this.iso,
-    });
-
-    factory Exif.fromJson(Map<String, dynamic> json) =>
-        _$ExifFromJson(json);
-
-    Map<String, dynamic> toJson() => _$ExifToJson(this);
-}
-
-@JsonSerializable(explicitToJson: true)
-class UnsplashResponseLinks {
+class ResultLinks {
     String self;
     String html;
     String download;
     String downloadLocation;
 
-    UnsplashResponseLinks({
+    ResultLinks({
         this.self,
         this.html,
         this.download,
         this.downloadLocation,
     });
 
-    factory UnsplashResponseLinks.fromJson(Map<String, dynamic> json) =>
-        _$UnsplashResponseLinksFromJson(json);
+    factory ResultLinks.fromJson(Map<String, dynamic> json) =>
+        _$ResultLinksFromJson(json);
 
-    Map<String, dynamic> toJson() => _$UnsplashResponseLinksToJson(this);
+    Map<String, dynamic> toJson() => _$ResultLinksToJson(this);
 }
 
 @JsonSerializable(explicitToJson: true)
-class Location {
-    dynamic title;
-    dynamic name;
-    dynamic city;
-    dynamic country;
-    Position position;
+class Tag {
+    String type;
+    String title;
+    Source source;
 
-    Location({
+    Tag({
+        this.type,
         this.title,
-        this.name,
-        this.city,
-        this.country,
-        this.position,
+        this.source,
     });
 
-    factory Location.fromJson(Map<String, dynamic> json) =>
-        _$LocationFromJson(json);
+    factory Tag.fromJson(Map<String, dynamic> json) =>
+        _$TagFromJson(json);
 
-    Map<String, dynamic> toJson() => _$LocationToJson(this);
+    Map<String, dynamic> toJson() => _$TagToJson(this);
 }
 
 @JsonSerializable(explicitToJson: true)
-class Position {
-    dynamic latitude;
-    dynamic longitude;
+class Source {
+    Ancestry ancestry;
+    String title;
+    String subtitle;
+    String description;
+    String metaTitle;
+    String metaDescription;
+    CoverPhoto coverPhoto;
 
-    Position({
-        this.latitude,
-        this.longitude,
+    Source({
+        this.ancestry,
+        this.title,
+        this.subtitle,
+        this.description,
+        this.metaTitle,
+        this.metaDescription,
+        this.coverPhoto,
     });
 
-    factory Position.fromJson(Map<String, dynamic> json) =>
-        _$PositionFromJson(json);
+    factory Source.fromJson(Map<String, dynamic> json) =>
+        _$SourceFromJson(json);
 
-    Map<String, dynamic> toJson() => _$PositionToJson(this);
+    Map<String, dynamic> toJson() => _$SourceToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class Ancestry {
+    Category type;
+    Category category;
+    Category subcategory;
+
+    Ancestry({
+        this.type,
+        this.category,
+        this.subcategory,
+    });
+
+    factory Ancestry.fromJson(Map<String, dynamic> json) =>
+        _$AncestryFromJson(json);
+
+    Map<String, dynamic> toJson() => _$AncestryToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class Category {
+    String slug;
+    String prettySlug;
+
+    Category({
+        this.slug,
+        this.prettySlug,
+    });
+
+    factory Category.fromJson(Map<String, dynamic> json) =>
+        _$CategoryFromJson(json);
+
+    Map<String, dynamic> toJson() => _$CategoryToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class CoverPhoto {
+    String id;
+    DateTime createdAt;
+    DateTime updatedAt;
+    int width;
+    int height;
+    String color;
+    String description;
+    String altDescription;
+    Urls urls;
+    ResultLinks links;
+    List<dynamic> categories;
+    int likes;
+    bool likedByUser;
+    List<dynamic> currentUserCollections;
+    User user;
+
+    CoverPhoto({
+        this.id,
+        this.createdAt,
+        this.updatedAt,
+        this.width,
+        this.height,
+        this.color,
+        this.description,
+        this.altDescription,
+        this.urls,
+        this.links,
+        this.categories,
+        this.likes,
+        this.likedByUser,
+        this.currentUserCollections,
+        this.user,
+    });
+
+    factory CoverPhoto.fromJson(Map<String, dynamic> json) =>
+        _$CoverPhotoFromJson(json);
+
+    Map<String, dynamic> toJson() => _$CoverPhotoToJson(this);
 }
 
 @JsonSerializable(explicitToJson: true)
@@ -169,7 +235,7 @@ class User {
     String name;
     String firstName;
     String lastName;
-    dynamic twitterUsername;
+    String twitterUsername;
     String portfolioUrl;
     String bio;
     String location;

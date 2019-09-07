@@ -8,6 +8,23 @@ part of 'unsplash.model.dart';
 
 UnsplashResponse _$UnsplashResponseFromJson(Map<String, dynamic> json) {
   return UnsplashResponse(
+      total: json['total'] as int,
+      totalPages: json['totalPages'] as int,
+      results: (json['results'] as List)
+          ?.map((e) =>
+              e == null ? null : Result.fromJson(e as Map<String, dynamic>))
+          ?.toList());
+}
+
+Map<String, dynamic> _$UnsplashResponseToJson(UnsplashResponse instance) =>
+    <String, dynamic>{
+      'total': instance.total,
+      'totalPages': instance.totalPages,
+      'results': instance.results?.map((e) => e?.toJson())?.toList()
+    };
+
+Result _$ResultFromJson(Map<String, dynamic> json) {
+  return Result(
       id: json['id'] as String,
       createdAt: json['createdAt'] == null
           ? null
@@ -18,15 +35,14 @@ UnsplashResponse _$UnsplashResponseFromJson(Map<String, dynamic> json) {
       width: json['width'] as int,
       height: json['height'] as int,
       color: json['color'] as String,
-      description: json['description'],
+      description: json['description'] as String,
       altDescription: json['altDescription'] as String,
       urls: json['urls'] == null
           ? null
           : Urls.fromJson(json['urls'] as Map<String, dynamic>),
       links: json['links'] == null
           ? null
-          : UnsplashResponseLinks.fromJson(
-              json['links'] as Map<String, dynamic>),
+          : ResultLinks.fromJson(json['links'] as Map<String, dynamic>),
       categories: json['categories'] as List,
       likes: json['likes'] as int,
       likedByUser: json['likedByUser'] as bool,
@@ -34,18 +50,13 @@ UnsplashResponse _$UnsplashResponseFromJson(Map<String, dynamic> json) {
       user: json['user'] == null
           ? null
           : User.fromJson(json['user'] as Map<String, dynamic>),
-      exif: json['exif'] == null
-          ? null
-          : Exif.fromJson(json['exif'] as Map<String, dynamic>),
-      location: json['location'] == null
-          ? null
-          : Location.fromJson(json['location'] as Map<String, dynamic>),
-      views: json['views'] as int,
-      downloads: json['downloads'] as int);
+      tags: (json['tags'] as List)
+          ?.map(
+              (e) => e == null ? null : Tag.fromJson(e as Map<String, dynamic>))
+          ?.toList());
 }
 
-Map<String, dynamic> _$UnsplashResponseToJson(UnsplashResponse instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$ResultToJson(Result instance) => <String, dynamic>{
       'id': instance.id,
       'createdAt': instance.createdAt?.toIso8601String(),
       'updatedAt': instance.updatedAt?.toIso8601String(),
@@ -61,42 +72,18 @@ Map<String, dynamic> _$UnsplashResponseToJson(UnsplashResponse instance) =>
       'likedByUser': instance.likedByUser,
       'currentUserCollections': instance.currentUserCollections,
       'user': instance.user?.toJson(),
-      'exif': instance.exif?.toJson(),
-      'location': instance.location?.toJson(),
-      'views': instance.views,
-      'downloads': instance.downloads
+      'tags': instance.tags?.map((e) => e?.toJson())?.toList()
     };
 
-Exif _$ExifFromJson(Map<String, dynamic> json) {
-  return Exif(
-      make: json['make'] as String,
-      model: json['model'] as String,
-      exposureTime: json['exposureTime'] as String,
-      aperture: json['aperture'] as String,
-      focalLength: json['focalLength'] as String,
-      iso: json['iso'] as int);
-}
-
-Map<String, dynamic> _$ExifToJson(Exif instance) => <String, dynamic>{
-      'make': instance.make,
-      'model': instance.model,
-      'exposureTime': instance.exposureTime,
-      'aperture': instance.aperture,
-      'focalLength': instance.focalLength,
-      'iso': instance.iso
-    };
-
-UnsplashResponseLinks _$UnsplashResponseLinksFromJson(
-    Map<String, dynamic> json) {
-  return UnsplashResponseLinks(
+ResultLinks _$ResultLinksFromJson(Map<String, dynamic> json) {
+  return ResultLinks(
       self: json['self'] as String,
       html: json['html'] as String,
       download: json['download'] as String,
       downloadLocation: json['downloadLocation'] as String);
 }
 
-Map<String, dynamic> _$UnsplashResponseLinksToJson(
-        UnsplashResponseLinks instance) =>
+Map<String, dynamic> _$ResultLinksToJson(ResultLinks instance) =>
     <String, dynamic>{
       'self': instance.self,
       'html': instance.html,
@@ -104,32 +91,119 @@ Map<String, dynamic> _$UnsplashResponseLinksToJson(
       'downloadLocation': instance.downloadLocation
     };
 
-Location _$LocationFromJson(Map<String, dynamic> json) {
-  return Location(
-      title: json['title'],
-      name: json['name'],
-      city: json['city'],
-      country: json['country'],
-      position: json['position'] == null
+Tag _$TagFromJson(Map<String, dynamic> json) {
+  return Tag(
+      type: json['type'] as String,
+      title: json['title'] as String,
+      source: json['source'] == null
           ? null
-          : Position.fromJson(json['position'] as Map<String, dynamic>));
+          : Source.fromJson(json['source'] as Map<String, dynamic>));
 }
 
-Map<String, dynamic> _$LocationToJson(Location instance) => <String, dynamic>{
+Map<String, dynamic> _$TagToJson(Tag instance) => <String, dynamic>{
+      'type': instance.type,
       'title': instance.title,
-      'name': instance.name,
-      'city': instance.city,
-      'country': instance.country,
-      'position': instance.position?.toJson()
+      'source': instance.source?.toJson()
     };
 
-Position _$PositionFromJson(Map<String, dynamic> json) {
-  return Position(latitude: json['latitude'], longitude: json['longitude']);
+Source _$SourceFromJson(Map<String, dynamic> json) {
+  return Source(
+      ancestry: json['ancestry'] == null
+          ? null
+          : Ancestry.fromJson(json['ancestry'] as Map<String, dynamic>),
+      title: json['title'] as String,
+      subtitle: json['subtitle'] as String,
+      description: json['description'] as String,
+      metaTitle: json['metaTitle'] as String,
+      metaDescription: json['metaDescription'] as String,
+      coverPhoto: json['coverPhoto'] == null
+          ? null
+          : CoverPhoto.fromJson(json['coverPhoto'] as Map<String, dynamic>));
 }
 
-Map<String, dynamic> _$PositionToJson(Position instance) => <String, dynamic>{
-      'latitude': instance.latitude,
-      'longitude': instance.longitude
+Map<String, dynamic> _$SourceToJson(Source instance) => <String, dynamic>{
+      'ancestry': instance.ancestry?.toJson(),
+      'title': instance.title,
+      'subtitle': instance.subtitle,
+      'description': instance.description,
+      'metaTitle': instance.metaTitle,
+      'metaDescription': instance.metaDescription,
+      'coverPhoto': instance.coverPhoto?.toJson()
+    };
+
+Ancestry _$AncestryFromJson(Map<String, dynamic> json) {
+  return Ancestry(
+      type: json['type'] == null
+          ? null
+          : Category.fromJson(json['type'] as Map<String, dynamic>),
+      category: json['category'] == null
+          ? null
+          : Category.fromJson(json['category'] as Map<String, dynamic>),
+      subcategory: json['subcategory'] == null
+          ? null
+          : Category.fromJson(json['subcategory'] as Map<String, dynamic>));
+}
+
+Map<String, dynamic> _$AncestryToJson(Ancestry instance) => <String, dynamic>{
+      'type': instance.type?.toJson(),
+      'category': instance.category?.toJson(),
+      'subcategory': instance.subcategory?.toJson()
+    };
+
+Category _$CategoryFromJson(Map<String, dynamic> json) {
+  return Category(
+      slug: json['slug'] as String, prettySlug: json['prettySlug'] as String);
+}
+
+Map<String, dynamic> _$CategoryToJson(Category instance) =>
+    <String, dynamic>{'slug': instance.slug, 'prettySlug': instance.prettySlug};
+
+CoverPhoto _$CoverPhotoFromJson(Map<String, dynamic> json) {
+  return CoverPhoto(
+      id: json['id'] as String,
+      createdAt: json['createdAt'] == null
+          ? null
+          : DateTime.parse(json['createdAt'] as String),
+      updatedAt: json['updatedAt'] == null
+          ? null
+          : DateTime.parse(json['updatedAt'] as String),
+      width: json['width'] as int,
+      height: json['height'] as int,
+      color: json['color'] as String,
+      description: json['description'] as String,
+      altDescription: json['altDescription'] as String,
+      urls: json['urls'] == null
+          ? null
+          : Urls.fromJson(json['urls'] as Map<String, dynamic>),
+      links: json['links'] == null
+          ? null
+          : ResultLinks.fromJson(json['links'] as Map<String, dynamic>),
+      categories: json['categories'] as List,
+      likes: json['likes'] as int,
+      likedByUser: json['likedByUser'] as bool,
+      currentUserCollections: json['currentUserCollections'] as List,
+      user: json['user'] == null
+          ? null
+          : User.fromJson(json['user'] as Map<String, dynamic>));
+}
+
+Map<String, dynamic> _$CoverPhotoToJson(CoverPhoto instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'createdAt': instance.createdAt?.toIso8601String(),
+      'updatedAt': instance.updatedAt?.toIso8601String(),
+      'width': instance.width,
+      'height': instance.height,
+      'color': instance.color,
+      'description': instance.description,
+      'altDescription': instance.altDescription,
+      'urls': instance.urls?.toJson(),
+      'links': instance.links?.toJson(),
+      'categories': instance.categories,
+      'likes': instance.likes,
+      'likedByUser': instance.likedByUser,
+      'currentUserCollections': instance.currentUserCollections,
+      'user': instance.user?.toJson()
     };
 
 Urls _$UrlsFromJson(Map<String, dynamic> json) {
@@ -159,7 +233,7 @@ User _$UserFromJson(Map<String, dynamic> json) {
       name: json['name'] as String,
       firstName: json['firstName'] as String,
       lastName: json['lastName'] as String,
-      twitterUsername: json['twitterUsername'],
+      twitterUsername: json['twitterUsername'] as String,
       portfolioUrl: json['portfolioUrl'] as String,
       bio: json['bio'] as String,
       location: json['location'] as String,
