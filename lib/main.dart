@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'ui/weather.dart';
+import 'ui/city_select.dart';
 
 Future main() async {
   await DotEnv().load('.env');
@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Weather',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: Weather(),
+      home: CitySelect(),
     );
   }
 }

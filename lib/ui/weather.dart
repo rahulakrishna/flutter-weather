@@ -6,9 +6,11 @@ import '../models/weather.model.dart';
 import '../models/unsplash.model.dart';
 
 class Weather extends StatelessWidget {
+  Weather({this.city});
+  final String city;
   Future<WeatherResponse> getWeather() async {
     final String url =
-        'https://api.openweathermap.org/data/2.5/weather?q=Kozhikode,in&appid=${DotEnv().env['OPEN_WEATHER_APP_ID']}';
+        'https://api.openweathermap.org/data/2.5/weather?q=$city,in&appid=${DotEnv().env['OPEN_WEATHER_APP_ID']}';
     var response = await http.get(url);
     if (response.statusCode == 200) {
       return WeatherResponse.fromJson(json.decode(response.body));
@@ -65,38 +67,38 @@ class Weather extends StatelessWidget {
                             return LinearProgressIndicator();
                           }),
                       Container(
-                        width: 800,
-                        height: 1080,
-                        decoration: BoxDecoration(
-                          color: Colors.black38,
-                        ),
-                        child: Text('')
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                          Center(
-                              child: Text(
-                                  '${snapshot.data.name}, ${snapshot.data.sys.country}',
-                                style: TextStyle(color: Colors.white),)
-                                ),
-                          Center(
-                            child: Text(
-                              '${getCelsiusFromKelvin(snapshot.data.main.temp).toStringAsFixed(1)} °C',
-                              style: TextStyle(color: Colors.white, fontSize: 48, fontWeight: FontWeight.w900)
-                            ),
+                          width: 800,
+                          height: 1080,
+                          decoration: BoxDecoration(
+                            color: Colors.black38,
                           ),
-                          Center(
-                              child: Text(
-                                  '${snapshot.data.weather[0].description}',
-                                  style: TextStyle(color: Colors.white)
-                                )),
-                        ]),
-                      ]
-                      )
+                          child: Text('')),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Center(
+                                      child: Text(
+                                    '${snapshot.data.name}, ${snapshot.data.sys.country}',
+                                    style: TextStyle(color: Colors.white),
+                                  )),
+                                  Center(
+                                    child: Text(
+                                        '${getCelsiusFromKelvin(snapshot.data.main.temp).toStringAsFixed(1)} °C',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 48,
+                                            fontWeight: FontWeight.w900)),
+                                  ),
+                                  Center(
+                                      child: Text(
+                                          '${snapshot.data.weather[0].description}',
+                                          style:
+                                              TextStyle(color: Colors.white))),
+                                ]),
+                          ])
                     ]));
               } else if (snapshot.hasError) {
                 return Text('Some Error Occured');
